@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<form  id="form">
+    <input type="hidden" value={{id}} name="id" >
+    标题：<input type="text" name="title" value={{title}}><br>
+    用户： <input type="text" name="user" value={{user}}><br>
+    地址： <input type="text" name="address" value={{address}}><br>
+    时间： <input type="data" name="time" value={{time}}><br>
+    是否审核: <input type="radio" name="check" value="已审核">是 <input type="radio" name="check" value="未审核">否
+    <br>
+    <input type="submit" value="提交">
+</form>
+</body>
+<script src="/node_modules/jquery/dist/jquery.js"></script>
+<script>
+    $('#form').on('submit',(e)=>{
+        e.preventDefault();
+        let date=$('#form').serialize();
+        let data=$('#form').serializeArray()
+        console.log(data);
+        $.ajax({
+            type:'post',
+            url:'/modify',
+            data:date,
+            dataType:'json',
+            success:(result)=>{
+               // console.log(result);
+                if(result.err_code==1)
+                {
+                    alert('修改成功');
+                    window.location.href='/look';
+                }
+                else{
+                    alert('未成功');
+                }
+            },
+
+            error:()=>{
+                console.log('服务器错误');
+            }
+        })
+
+    })
+</script>
+</html>

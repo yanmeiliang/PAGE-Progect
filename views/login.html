@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>登陆页面</title>
+<!--    bootstrap的清除-->
+    <link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.css">
+    <link rel="stylesheet" href="../public/css/login.css">
+
+</head>
+<body>
+  <div class="main">
+      <div class="header">
+          <a href="/">
+              <img src="../public/img/logo.png" style="width: 5rem;height: 5rem">
+          </a>
+          <h3>用户登录</h3>
+      </div>
+      <form id="login-form">
+<!--        margin-bootom  boostrap中form-group是设置的
+form-control是bootstrap中的css设置表单的百分百自适应
+-->
+         <div class="form-group">
+             <label for="i">邮箱</label>
+             <input type="email" class="form-control" id="i" name="email" placeholder="Email" autofocus>
+         </div>
+          <div class="form-group">
+              <label for="ii">密码</label>
+              <a href="#" class="forget">忘记密码?</a>
+              <input type="password" class="form-control" id='ii' name="password" placeholder="Password" autofocus>
+          </div>
+          <div>
+              <label for="i1">
+                  <input type="checkbox" id="i1">&nbsp;&nbsp;记住我
+              </label>
+          </div>
+          <button type="submit" class="btn btn-success btn-block">登陆</button>
+      </form>
+      <div class="footer">
+          <span>没有账号?</span><a href="/register">点击创建</a>
+      </div>
+  </div>
+  <script src="../node_modules/jquery/dist/jquery.js"></script>
+  <script>
+      $('#login-form').on('submit',(e)=>{
+          e.preventDefault();
+          //获取表单数据
+          var data=$('#login-form').serialize();
+          console.log(data);
+          $.ajax({
+              type:'post',
+              url:'/login',
+              data:data,
+              dataType:'json',
+              success:(data)=>{
+                  if(data.err_code==1){
+                      alert('密码或者用户输入错误，请重新输入');
+                  }
+
+                  if(data.err_code==500)
+                  {
+                      alert('服务器错误');
+                  }
+                  if(data.err_code==0)
+                  {
+                      console.log(555);
+                      alert('未注册，请你去注册');
+                      window.location.href="/register";
+                  }
+                  if(data.err_code==2){
+                 alert("登录成功")
+                  window.location.href='/look';
+                  }
+
+              },
+              error:()=>{
+                  console.log('err');
+              }
+          })
+      })
+  </script>
+</body>
+</html>

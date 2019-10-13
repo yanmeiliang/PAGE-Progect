@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>注册页面</title>
+    <link rel="stylesheet" href="/node_modules/bootstrap/dist/css/bootstrap.css">
+    <link rel="stylesheet" href="/public/css/login.css">
+</head>
+<body>
+<div class="main">
+    <div class="header">
+        <a href="/">
+            <img src="/public/img/logo.png" alt="" style="width: 5rem;height: 5rem">
+        </a>
+        <h3>用户注册</h3>
+    </div>
+    <form id="register_form" method="post" action="/register">
+        <!--        margin-bootom  boostrap中form-group是设置的
+        form-control是bootstrap中的css设置表单的百分百自适应
+        -->
+        <div class="form-group">
+            <label for="i">邮箱</label>
+            <input type="email" class="form-control" id="i" name="email" placeholder="Email" autofocus>
+        </div>
+        <div class="form-group">
+            <label for="ii">昵称</label>
+            <input type="text" class="form-control" id='ii' name="nickname" placeholder="NackName" autofocus>
+        </div>
+        <div class="form-group">
+            <label for="ii1">密码</label>
+            <input type="password" class="form-control" id='ii1' name="password" placeholder="Password" autofocus>
+        </div>
+        <button type="submit" class="btn btn-success btn-block">注册</button>
+    </form>
+    <div class="footer">
+        <span>已有账号?</span><a href="/">点击登陆</a>
+    </div>
+</div>
+<script src="/node_modules/jquery/dist/jquery.js"></script>
+<script>
+    $('#register_form').on('submit',(e)=>{
+        e.preventDefault();
+        //获取表单数据
+        var Data=$('#register_form').serialize();
+        $.ajax({
+            type:'post',
+            url:'/register',
+            data:Data,
+            // dataType:'json',
+            success:(data)=>{
+                console.log(data);
+                if(data.err_code==-1)
+                {
+                    alert('服务器错误');
+                }
+                else if(data.err_code==1){
+                    alert('该用户已经存在');
+                }
+                else if(data.err_code==2)
+                {
+                    alert('注册成功');
+                    // window.location.href='/';
+                }
+            },
+            error:()=>{
+                alert('服务器忙，请稍后重试');
+            }
+        })
+
+    })
+</script>
+</body>
+</html>
